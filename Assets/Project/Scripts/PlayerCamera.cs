@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour {
 
-    public GameObject player;
-    public float offset = 1.3f;
+    [SerializeField]
+    private GameObject player;
+    [SerializeField]
+    private float offset = 1.3f;
 
 	// Update is called once per frame
 	void FixedUpdate () {
