@@ -7,14 +7,17 @@ public class Enemy : MonoBehaviour {
     public delegate void KillHandler();
     public event KillHandler OnKill;
 
-    public GameObject bulletPrefab;
-    public float speed = 2f;
-    public float shootingInterval = 3f;
-    public float bulletSpeed = 2f;
+    [SerializeField]
+    private GameObject bulletPrefab;
+    [SerializeField]
+    private float speed = 2f;
+    [SerializeField]
+    private float shootingInterval = 3f;
+    [SerializeField]
+    private float bulletSpeed = 2f;
 
     private float shootingTimet;
 
-	// Use this for initialization
 	void OnEnable () {
         shootingTimet = Random.Range(0f, shootingInterval);
 
@@ -24,8 +27,7 @@ public class Enemy : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         shootingTimet -= Time.deltaTime;
-        if (shootingTimet <= 0)
-        {
+        if (shootingTimet <= 0) {
             shootingTimet = shootingInterval;
 
             GameObject bulletInstance = Instantiate(bulletPrefab);
@@ -36,22 +38,17 @@ public class Enemy : MonoBehaviour {
         }
 	}
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "Player Bullet")
-        {
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.tag == "Player Bullet") {
             gameObject.SetActive(false);
             Destroy(other.gameObject);
             if (OnKill != null)
-            {
                 OnKill();
-            }
         }
 
     }
 
-    public bool HasOnKill()
-    {
+    public bool HasOnKill() {
         return OnKill != null;
     }
 }
