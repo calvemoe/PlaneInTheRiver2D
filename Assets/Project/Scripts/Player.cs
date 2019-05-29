@@ -7,25 +7,30 @@ public class Player : MonoBehaviour {
     public delegate void FuelCollectionHandler();
     public event FuelCollectionHandler OnCollect;
     
-    public float speedVertical = 1f;
-    public float speedHorizontal = 3f;
-    public float horizontalLimit = 2.8f;
+    [SerializeField]
+    private float speedVertical = 1f;
+    [SerializeField]
+    private float speedHorizontal = 3f;
+    [SerializeField]
+    private float horizontalLimit = 2.8f;
 
-    public float bulletSpeed = 2f;
-    public GameObject bulletPrefab;
+    [SerializeField]
+    private float bulletSpeed = 2f;
+    [SerializeField]
+    private GameObject bulletPrefab;
 
     private bool fired = false;
+    private Rigidbody2D rb;
 
-	// Use this for initialization
-	void Start () {
-		
+	void Awake () {
+		rb = GetComponent<Rigidbody2D>();
 	}
 
     // Update is called once per frame
     void Update()
     {
         //movement logic
-        GetComponent<Rigidbody2D>().velocity = new Vector2(Input.GetAxis("Horizontal") * speedHorizontal, speedVertical);
+        rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speedHorizontal, speedVertical);
         if (Input.GetAxis("Horizontal") > 0)
             transform.rotation = Quaternion.Euler(new Vector3(0, 15, 90));
         else if (Input.GetAxis("Horizontal") < 0)
@@ -35,19 +40,13 @@ public class Player : MonoBehaviour {
 
         //keep player within bounce
         if (transform.position.x > horizontalLimit)
-        {
             transform.position = new Vector2(horizontalLimit, transform.position.y);
-        }
         else if (transform.position.x < -horizontalLimit)
-        {
             transform.position = new Vector2(-horizontalLimit, transform.position.y);
-        }
 
         //if (Input.GetKeyDown("mouse 0"))      //only for mouse 0, but without 'fired' bool and key-up logic
-        if (Input.GetAxis("Fire1") == 1)
-        {
-            if (!fired)
-            {
+        if (Input.GetAxis("Fire1") == 1) {
+            if (!fired) {
                 fired = true;
                 GameObject bulletInstance = Instantiate(bulletPrefab);
                 bulletInstance.transform.SetParent(transform.parent);
@@ -58,19 +57,14 @@ public class Player : MonoBehaviour {
         }
         else
             fired = false;
-
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "Enemy Bullet" || other.tag == "Enemy")
-        {
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag("Enemy Bullet") || other.CompareTag("Enemy")) {
             Destroy(gameObject);
             Destroy(other.gameObject);
         }
-        else
-        if (other.tag == "FuelTank")
-        {
+        else if (other.CompareTag("FuelTank")) {
             Destroy(other.gameObject);
             if (OnCollect != null)
                 OnCollect();
