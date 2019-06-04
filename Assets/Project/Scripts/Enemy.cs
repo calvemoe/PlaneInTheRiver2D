@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ZenvaVR;
 
 public class Enemy : MonoBehaviour {
 
@@ -8,7 +9,7 @@ public class Enemy : MonoBehaviour {
     public event KillHandler OnKill;
 
     [SerializeField]
-    private GameObject bulletPrefab;
+    private ObjectPool enemyBulletsPool;
     [SerializeField]
     private float speed = 2f;
     [SerializeField]
@@ -30,22 +31,26 @@ public class Enemy : MonoBehaviour {
         if (shootingTimet <= 0) {
             shootingTimet = shootingInterval;
 
-            GameObject bulletInstance = Instantiate(bulletPrefab);
+            GameObject bulletInstance = enemyBulletsPool.GetObj();
             bulletInstance.transform.SetParent(transform.parent);
             bulletInstance.transform.position = transform.position;
             bulletInstance.GetComponent<Rigidbody2D>().velocity = new Vector2(0, -bulletSpeed);
-            Destroy(bulletInstance, 2f);
+        }
+
+        //disabling enemy bullets
+        foreach (GameObject enemyBullet in enemyBulletsPool.GetAllActive()) {
+            if(GameController.GetMainCameraTransform().position.y - enemyBullet.transform.position.y > GameController.GetScreenSize())
+                enemyBullet.gameObject.SetActive(false);
         }
 	}
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Player Bullet") {
             gameObject.SetActive(false);
-            Destroy(other.gameObject);
+            other.gameObject.SetActive(false);
             if (OnKill != null)
                 OnKill();
         }
-
     }
 
     public bool HasOnKill() {
