@@ -113,6 +113,48 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &77180
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 77181}
+  - component: {fileID: 77182}
+  m_Layer: 0
+  m_Name: BulletPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &77181
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 77180}
+  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 34.238667, y: 1.2861786, z: 0.10546875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 405397135}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &77182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 77180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 609036855cf2705469a647939c06e6cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolPrefab: {fileID: 1673594642747084, guid: e260157cd000388459b1fdebdcab1aef, type: 2}
+  initialNum: 10
 --- !u!1 &84410006
 GameObject:
   m_ObjectHideFlags: 0
@@ -663,7 +705,7 @@ GameObject:
   - component: {fileID: 285822583}
   - component: {fileID: 285822582}
   m_Layer: 0
-  m_Name: ObjectPool
+  m_Name: EnemyPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1098,7 +1140,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: -1.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 77181}
   m_Father: {fileID: 1892586527}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
@@ -1180,8 +1223,7 @@ MonoBehaviour:
   speedHorizontal: 4
   horizontalLimit: 2.8
   bulletSpeed: 4
-  bulletPrefab: {fileID: 1673594642747084, guid: e260157cd000388459b1fdebdcab1aef,
-    type: 2}
+  bulletPool: {fileID: 77182}
 --- !u!212 &405397139
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1216,7 +1258,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1741663299
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300542, guid: 48ecfc084c36ddc4d8bdf8b3e3ca8137, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1603,6 +1645,48 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &482749792
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 482749794}
+  - component: {fileID: 482749793}
+  m_Layer: 0
+  m_Name: FuelBarrelPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &482749793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 482749792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 609036855cf2705469a647939c06e6cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolPrefab: {fileID: 1068877062089354, guid: 8ac52f5d05ddba8408b96b930d03be01, type: 2}
+  initialNum: 4
+--- !u!4 &482749794
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 482749792}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.2861805, y: 33.038662, z: 0.10546875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1892586527}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &483416700
 GameObject:
   m_ObjectHideFlags: 0
@@ -5730,6 +5814,7 @@ Transform:
   - {fileID: 955662256}
   - {fileID: 405397135}
   - {fileID: 285822583}
+  - {fileID: 482749794}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5748,10 +5833,11 @@ MonoBehaviour:
   fuelText: {fileID: 920482311}
   player: {fileID: 405397138}
   mainCamera: {fileID: 519420028}
+  fuelPrefab: {fileID: 1068877062089354, guid: 8ac52f5d05ddba8408b96b930d03be01, type: 2}
   enemyPool: {fileID: 285822582}
+  fuelBarrelPool: {fileID: 482749793}
   enemySpawnInterval: 1
   horizontalLimit: 2.8
-  fuelPrefab: {fileID: 1068877062089354, guid: 8ac52f5d05ddba8408b96b930d03be01, type: 2}
   fuelSpawnInterval: 9
   fuelDecreaseSpeed: 5
 --- !u!1 &1920887323
