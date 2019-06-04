@@ -19,12 +19,14 @@ public class GameController : MonoBehaviour {
     [SerializeField]
     private ObjectPool enemyPool;
     [SerializeField]
+    private ObjectPool fuelBarrelPool;
+
+    [SerializeField]
     private float enemySpawnInterval = 1f;
     [SerializeField]
     private float horizontalLimit = 2.8f;
 
-    [SerializeField]
-    private GameObject fuelPrefab;
+
     [SerializeField]
     private float fuelSpawnInterval = 9f;
     [SerializeField]
@@ -36,7 +38,9 @@ public class GameController : MonoBehaviour {
     private float fuelSpawnTimer;
     private float restartTimer = 3f;
 
-    Transform mainCameraTransform;
+    private static float screenSizeDividedByHandred = Screen.height / 100f;
+
+    private static Transform mainCameraTransform;
     Transform playerTransform;
 
     void Awake() {
@@ -64,7 +68,7 @@ public class GameController : MonoBehaviour {
                 enemyInstance.transform.SetParent(transform);
                 enemyInstance.transform.position = new Vector2(
                     Random.Range(-horizontalLimit, horizontalLimit),
-                    playerTransform.position.y + Screen.height / 100f);
+                    playerTransform.position.y + screenSizeDividedByHandred);
 
                 if(!enemyInstance.GetComponent<Enemy>().HasOnKill())
                     enemyInstance.GetComponent<Enemy>().OnKill += OnEnemyKill;
@@ -73,12 +77,12 @@ public class GameController : MonoBehaviour {
             fuelSpawnTimer -= Time.deltaTime;
             if (fuelSpawnTimer <= 0) {
                 fuelSpawnTimer = fuelSpawnInterval;
-                GameObject fuelInstance = Instantiate(fuelPrefab);
+                GameObject fuelInstance = fuelBarrelPool.GetObj();
 
                 fuelInstance.transform.SetParent(transform);
                 fuelInstance.transform.position = new Vector2(
                     Random.Range(-horizontalLimit, horizontalLimit),
-                    playerTransform.position.y + Screen.height / 100f);
+                    playerTransform.position.y + screenSizeDividedByHandred);
             }
 
             fuel -= Time.deltaTime * fuelDecreaseSpeed;
@@ -89,7 +93,7 @@ public class GameController : MonoBehaviour {
             else if (fuel < 15)
                 fuelText.color = Color.red;
 
-            else if (fuel <= 0) {
+            if (fuel <= 0) {
                 fuelText.text = "EMPTY!";
                 fuelText.color = Color.red;
                 Destroy(player.gameObject);
@@ -101,10 +105,16 @@ public class GameController : MonoBehaviour {
                 SceneManager.LoadScene("Game");
         }
 
-        //disabled  enemies
-        foreach (Enemy enemy in GetComponentsInChildren<Enemy>()) {
-            if(mainCameraTransform.position.y - enemy.transform.position.y > Screen.height / 100f - 1f)
+        //disabling enemies
+        foreach (GameObject enemy in enemyPool.GetAllActive()) {
+            if(mainCameraTransform.position.y - enemy.transform.position.y > screenSizeDividedByHandred)
                 enemy.gameObject.SetActive(false);
+        }
+
+        //disablicng fuel barrels
+        foreach (GameObject barrel in fuelBarrelPool.GetAllActive()) {
+            if(mainCameraTransform.position.y - barrel.transform.position.y > screenSizeDividedByHandred)
+                barrel.gameObject.SetActive(false);
         }
     }
 
@@ -117,4 +127,13 @@ public class GameController : MonoBehaviour {
         fuel = 100f;
         fuelText.color = Color.white;
     }
+
+    public static float GetScreenSize() {
+        return screenSizeDividedByHandred / 1.8f;
+    }
+
+    public static Transform GetMainCameraTransform() {
+        return mainCameraTransform;
+    }
+
 }
